@@ -1,0 +1,147 @@
+#!/bin/bash
+
+# ----------------------------------------------------------------------------
+# Smile CDR  //  https://smilecdr.com
+# ----------------------------------------------------------------------------
+#
+# Startup Script for Linux Hosts
+#
+# ----------------------------------------------------------------------------
+
+# The version for this script (do not modify)
+CDR_STARTUP_SCRIPT_VERSION=1.0
+
+# Figure out where CDR's home is
+pushd `dirname $0`/.. > /dev/null
+CDRDIR=`pwd`
+popd > /dev/null
+
+# TODO: fail if the CDRDIR directory contains spaces
+
+# Change the working directory to the CDR home directory
+cd $CDRDIR
+
+# Create a temp directory for the PID file
+mkdir -p $CDRDIR/log
+PID_FILE=$CDRDIR/tmp/pid
+
+# Build the classpath
+CLASSPATH="$CDRDIR/classes"
+CLASSPATH="$CLASSPATH:$CDRDIR/lib/*:$CDRDIR/customerlib/*"
+
+. $CDRDIR/bin/setenv
+
+# Figure out the Java Home
+if [ ! -d "$JAVA_HOME" ]; then
+    RUNJAVA=`which java`
+    if [ ! -e $RUNJAVA ]; then
+        echo "Unable to determine the location of the JDK. Please set the JAVA_HOME"
+        echo "environment variable correctly."
+        exit 1
+    fi
+
+    # Figure out JAVA_HOME based on where "java" binary is
+    JAVA_HOME=$(dirname "${RUNJAVA}")
+    pushd `dirname $JAVA_HOME` > /dev/null
+    JAVA_HOME=`pwd`
+    popd > /dev/null
+
+    echo "Note: JAVA_HOME is not set. Using \"$JAVA_HOME\""
+fi
+
+RUNJAVA="$JAVA_HOME/bin/java"
+JVMARGS="$JVMARGS -Dcdr.startupscriptversion=$CDR_STARTUP_SCRIPT_VERSION"
+WATCHJVMARGS="$WATCHJVMARGS -Dcdr.startupscriptversion=$CDR_STARTUP_SCRIPT_VERSION"
+
+START_SCRIPT="$RUNJAVA -cp $CLASSPATH $JVMARGS      -Dsmile.basedir=$CDRDIR ca.cdr.app.App -c $CONFIGNAME"
+WATCH_SCRIPT="$RUNJAVA -cp $CLASSPATH $WATCHJVMARGS -Dsmile.basedir=$CDRDIR ca.cdr.app.App -c $CONFIGNAME -a watch"
+
+ARGS="" # optional start script arguments
+DAEMON=$START_SCRIPT
+
+start() {
+   if [ -e $CDRDIR/tmp ]; then
+      rm -fR $CDRDIR/tmp
+   fi
+   mkdir -p $CDRDIR/tmp
+   PID=`$DAEMON $ARGS > /dev/null 2>&1 & echo $!`
+   $WATCH_SCRIPT -t startup
+   
+   if [ -z $PID ]; then
+      echo "Failed starting"
+      exit 3
+   else
+      echo $PID > $PID_FILE
+      exit 0
+   fi
+   
+}
+
+stop() {
+   if [ -f $PID_FILE ]; then
+       PID=`cat $PID_FILE`
+       if [ -z "`ps ax | grep -w ${PID} | grep -v grep`" ]; then
+           echo "Not running (process dead but pidfile exists)"
+           exit 1
+       else
+           PID=`cat $PID_FILE`
+           kill -HUP $PID
+           $WATCH_SCRIPT -t shutdown
+           rm -f $PID_FILE
+       fi
+   else
+       echo "Not running (pid not found)"
+       exit 3
+   fi
+}
+
+case "$1" in
+start)
+    if [ -f $PID_FILE ]; then
+        PID=`cat $PID_FILE`
+        if [ -z "`ps ax | grep -w ${PID} | grep -v grep`" ]; then
+            start
+        else
+            echo "Already running [$PID]"
+            exit 0
+        fi
+    else
+        start
+    fi
+;;
+
+status)
+    if [ -f $PID_FILE ]; then
+        PID=`cat $PID_FILE`
+        if [ -z "`ps ax | grep -w ${PID} | grep -v grep`" ]; then
+            echo "Not running (process dead but pidfile exists)"
+            exit 1
+        else
+            echo "Running [$PID]"
+            exit 0
+        fi
+    else
+        echo "Not running"
+        exit 3
+    fi
+;;
+
+stop)
+   stop
+   exit 0
+;;
+
+restart)
+    stop
+    start
+;;
+
+run)
+    # Launch Smile CDR in foreground without creating a new process.
+    exec $START_SCRIPT
+;;
+
+*)
+    echo "Usage: $0 {status|start|stop|restart|run}"
+    exit 1
+esac

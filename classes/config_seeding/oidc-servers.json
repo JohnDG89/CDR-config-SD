@@ -1,0 +1,14 @@
+{
+  "servers": [
+    {
+      "name": "Some Server",
+      "issuer": "http://example.com/iss",
+      "tokenIntrospectionClientId": "",
+      "tokenIntrospectionClientSecret": "",
+      "nodeId": "Master",
+      "moduleId": "smart_auth",
+      "validationJwkText": "",
+      "validationJwkFile": ""
+    }
+  ]
+}
