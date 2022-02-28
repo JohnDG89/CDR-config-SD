@@ -12,10 +12,10 @@ services:
       - "9200:9200"
       - "9201:9201"
     environment:
-      - DB_URL_MGR=jdbc:postgresql://host.docker.internal:5433/cdr?currentSchema=manager
-      - DB_URL_FHIR=jdbc:postgresql://host.docker.internal:5433/cdr?currentSchema=relational
-      - DB_USER=cdr
-      - DB_PASS=SmileCDR
+      - DB_URL_MGR=${DB_URL_MGR}
+      - DB_URL_FHIR=${DB_URL_FHIR}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
     volumes:
       - db:/home/smile/smilecdr/database
       - log:/home/smile/smilecdr/log
