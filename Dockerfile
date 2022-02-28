@@ -5,7 +5,4 @@ FROM smilecdr
 WORKDIR /home/smile/smilecdr
 
 # Copy modified properties file to the container.
-copy ./cdr-config-Master-modified.properties ./classes/cdr-config-Master.properties
-
-# Copy modified environment settings file to the container.
-copy ./setenv_modified ./bin/setenv
+COPY ./local/cdr-config-Master.properties ./classes/cdr-config-Master.properties
