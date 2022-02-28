@@ -56,4 +56,4 @@ Los pasos que se realizaron fueron los siguientes:
 4. Se editó el archivo *cdr-config-Master.properties* permitiendo que reciba las credenciales de base de datos mediante variables de entorno
 5. Se generó archivo *Dockerfile* presente en el proyecto, el cual toma como base la imagen original de smilecdr y le copia el archivo de configuración modificado
 6. Se generó el archivo *docher-compose.yml* que crea el contenedor smilecdr, da el comando build, genera los volumenes y setea las variables de entorno dentro del contenedor
-7. Se generó archivo *.env-example* con tal de dejar en claro los nombres que deben tener las variables de entorno a crear en el archivo .env antes de ejecutar el comando de despliegue de docker-compose
+7. Se generó archivo `.env-example` con tal de dejar en claro los nombres que deben tener las variables de entorno a crear en el archivo `.env` antes de ejecutar el comando de despliegue de docker-compose
