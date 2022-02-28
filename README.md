@@ -1,4 +1,4 @@
-# CDR-config-SD
+# CDR SMILE
 Repositorio de configuración de las imagenes docker del CDR Salud Digital.
 
 Se requiere disponer de un servidor con docker y docker-compose instalado.
