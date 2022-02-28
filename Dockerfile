@@ -5,4 +5,4 @@ FROM smilecdr
 WORKDIR /home/smile/smilecdr
 
 # Copy modified properties file to the container.
-COPY ./local/cdr-config-Master.properties ./classes/cdr-config-Master.properties
+COPY ./changes/cdr-config-Master.properties ./classes/cdr-config-Master.properties
