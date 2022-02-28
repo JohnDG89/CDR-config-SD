@@ -32,7 +32,7 @@ docker-compose --version
 1. Mover imagen *smilecdr-2022.02.R01-docker.tar.gz* al servidor
 2. `cd` a la ruta donde dejó la imagen anterior y cargar a docker: `docker image load --input="smilecdr-2022.02.R01-docker.tar.gz"`
 3. Descargar este proyecto en el servidor
-4. Crear archivo *.env* con las variables de entorno que se muestran en el archivo *.env-example*
+4. Crear archivo *.env* usando como base el archivo *.env-example*, ahí deberá asignar la ruta de base de datos según el ambiente donde se esté desplegando
 5. Remover imagenes, contenedores y volumenes que pudiesen estar cargados en docker: `docker-compose down --rmi all -v`
 6. Posicionarse en la raíz donde se encuentra este proyecto en su servidor
 7. Crear la imagen, el contenedor y correrlo en segundo plano: `docker-compose up --build -d`. Si desea correr viendo el log no ingrese el `-d`
