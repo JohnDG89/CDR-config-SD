@@ -4,7 +4,7 @@ Repositorio de configuración de las imagenes docker del CDR Salud Digital.
 Se requiere disponer de un servidor con docker y docker-compose instalado.
 
 ### Configuración del ambiente servidor Centos 7
-Si no dispone de docker, deberá instalarlo siguiendo los siguiente comandos:
+#### Instalación de Docker engine
 ```
 #Instalar yum-utils package (quien provee la yum-config-manager) y setea un repositiorio estable.
 sudo yum install -y yum-utils
@@ -19,7 +19,14 @@ sudo systemctl start docker
 #Verificar que quedó correcto
 sudo docker run hello-world
 ```
+#### Instalación de docker compose
+```
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose --version
+```
 
 ### Instalación en servidores MINSAL
 1. Descargar el proyecto en el servidor a instalar el aplicativo
