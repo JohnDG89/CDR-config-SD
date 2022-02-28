@@ -9,3 +9,4 @@ Se requiere disponer de un servidor con docker y docker-compose instalado.
 3. Posicionarse en la raíz donde se encuentra este proyecto en su servidor
 4. Construir la nueva imagen modificada `docker-compose build`
 5. Crear el contenedor y correrlo en segundo plano `docker-compose up -d`
+6. Con eso deberá dirigirse a la ruta http://localhost:9100 y verá el login del aplicativo
