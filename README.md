@@ -54,5 +54,6 @@ Los pasos que se realizaron fueron los siguientes:
 2. Se cargó la imagen al docker engine local con el comando: `docker image load --input="smilecdr-2022.02.R01-docker.tar.gz"`
 3. Se creó la carpeta del proyecto, y se extrajo el archivo de configuración de cluster con el comando: `docker cp smilecdr:/home/smile/smilecdr/classes ./`
 4. Se editó el archivo *cdr-config-Master.properties* permitiendo que reciba las credenciales de base de datos mediante variables de entorno
-5. Se creó archivo *Dockerfile* presente en el proyecto, el cual toma como base la imagen original de smilecdr y le copia el archivo de configuración modificado
-6. Se creó el archivo *docher-compose.yml* que crea el contenedor smilecdr, da el comando build, genera los volumenes y setea las variables de entorno dentro del contenedor
+5. Se generó archivo *Dockerfile* presente en el proyecto, el cual toma como base la imagen original de smilecdr y le copia el archivo de configuración modificado
+6. Se generó el archivo *docher-compose.yml* que crea el contenedor smilecdr, da el comando build, genera los volumenes y setea las variables de entorno dentro del contenedor
+7. Se generó archivo *.env-example* con tal de dejar en claro los nombres que deben tener las variables de entorno a crear en el archivo .env antes de ejecutar el comando de despliegue de docker-compose
